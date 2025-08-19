@@ -30,6 +30,11 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+# Ignore plan files
+*.tfplan
+*.plan
+tfplan
+
 # IDE specific files
 .idea/
 *.iml
