@@ -37,7 +37,7 @@ jobs:
             -backend-config="resource_group_name=${{ secrets.TF_STATE_RG }}" \
             -backend-config="storage_account_name=${{ secrets.TF_STATE_SA }}" \
             -backend-config="container_name=tfstate" \
-            -backend-config="key=aicwebhookserviceterraform.tfstate"
+            -backend-config="key=alma-item-checks-shared.tfstate"
 
       - name: Terraform Validate
         run: terraform validate
