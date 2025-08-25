@@ -6,4 +6,4 @@ storage_account_name = "stterraformstatewrlc123"
 
 # These are static in your workflow
 container_name       = "tfstate"
-key                  = "alma-item-checks-shared.tfstate"
+key                  = "almaitemchecks-shared.tfstate"
