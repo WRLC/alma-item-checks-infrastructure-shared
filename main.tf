@@ -1,22 +1,42 @@
 # Data source for pre-existing app service plan
 data "azurerm_service_plan" "existing" {
   name                = var.app_service_plan_name
-  resource_group_name = var.asp_resource_group_name
+  resource_group_name = var.app_service_plan_resource_group
+}
+
+data "azurerm_log_analytics_workspace" "existing" {
+  name = var.log_analytics_workspace_name
+  resource_group_name = var.log_analytics_workspace_resource_group
+}
+
+data "azurerm_mysql_flexible_server" "existing" {
+  name = var.mysql_server_name
+  resource_group_name = var.mysql_server_resource_group_name
 }
 
 # Create new resource group for app
-resource "azurerm_resource_group" "project_rg" {
+resource "azurerm_resource_group" "main" {
   name     = "${var.app_name}-rg" # Naming convention for the new resource group
   location = data.azurerm_service_plan.existing.location
+
+  tags = {
+    Environment = "shared"
+    Project     = "almaitemchecks"
+  }
 }
 
 # Create new storage account for app
-resource "azurerm_storage_account" "storage_account" {
+resource "azurerm_storage_account" "main" {
   name                     = replace("${ var.app_name }sa", "-", "")
-  resource_group_name      = azurerm_resource_group.project_rg.name
-  location                 = azurerm_resource_group.project_rg.location
+  resource_group_name      = azurerm_resource_group.main.name
+  location                 = azurerm_resource_group.main.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+
+  tags = {
+    Environment = "shared"
+    Project     = "almaitemchecks"
+  }
 }
 
 # Storage resources to create
@@ -60,22 +80,22 @@ locals {
 }
 
 # Create storage queues for app
-resource "azurerm_storage_queue" "queues" {
+resource "azurerm_storage_queue" "main" {
   for_each             = local.queues_to_create
   name                 = each.key
-  storage_account_name = azurerm_storage_account.storage_account.name
+  storage_account_name = azurerm_storage_account.main.name
 }
 
 # Create storage containers for app
-resource "azurerm_storage_container" "containers" {
+resource "azurerm_storage_container" "main" {
   for_each           = local.containers_to_create
   name               = each.key
-  storage_account_id = azurerm_storage_account.storage_account.id
+  storage_account_id = azurerm_storage_account.main.id
 }
 
 # Create storage tables for app
-resource "azurerm_storage_table" "tables" {
+resource "azurerm_storage_table" "main" {
   for_each             = local.tables_to_create
   name                 = each.key
-  storage_account_name = azurerm_storage_account.storage_account.name
+  storage_account_name = azurerm_storage_account.main.name
 }
