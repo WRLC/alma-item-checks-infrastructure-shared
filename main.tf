@@ -42,40 +42,34 @@ resource "azurerm_storage_account" "main" {
 # Storage resources to create
 locals {
   fetch_queue_name                  = "fetch-queue"
-  scf_no_x_queue_name               = "scf-no-x-queue"
-  scf_no_row_tray_queue_name        = "scf-no-row-tray-queue"
-  scf_wd_queue_name                 = "scf-wd-queue"
+  update_queue_name                 = "update-queue"
   notification_queue_name           = "notification-queue"
   queues_to_create                  = toset([
     local.fetch_queue_name,
     "${local.fetch_queue_name}-stage",
-    local.scf_no_x_queue_name,
-    "${local.scf_no_x_queue_name}-stage",
-    local.scf_no_row_tray_queue_name,
-    "${local.scf_no_row_tray_queue_name}-stage",
-    local.scf_wd_queue_name,
-    "${local.scf_wd_queue_name}-stage",
+    local.update_queue_name,
+    "${local.update_queue_name}-stage",
     local.notification_queue_name,
     "${local.notification_queue_name}-stage"
   ])
-  scf_no_x_container_name           = "scf-no-x-container"
-  scf_no_row_tray_container_name    = "scf-no-row-tray-container"
-  scf_wd_container_name             = "scf-wd-container"
+  updated_items_container_name      = "updated-items-container"
+  reports_container_name            = "reports-container"
   containers_to_create              = toset([
-    local.scf_no_x_container_name,
-    "${local.scf_no_x_container_name}-stage",
-    local.scf_no_row_tray_container_name,
-    "${local.scf_no_row_tray_container_name}-stage",
-    local.scf_wd_container_name,
-    "${local.scf_wd_container_name}-stage"
+    local.updated_items_container_name,
+    "${local.updated_items_container_name}-stage",
+    local.reports_container_name,
+    "${local.reports_container_name}-stage"
   ])
   scf_no_row_tray_stage_table_name  = "scfnorowtraystagetable"
   scf_no_row_tray_report_table_name = "scfnorowtrayreporttable"
+  iznorowtraystagetable             = "iznorowtraystagetable"
   tables_to_create                  = toset([
     local.scf_no_row_tray_stage_table_name,
-    local.scf_no_row_tray_report_table_name,
     "${local.scf_no_row_tray_stage_table_name}stage",
-    "${local.scf_no_row_tray_report_table_name}stage"
+    local.scf_no_row_tray_report_table_name,
+    "${local.scf_no_row_tray_report_table_name}stage",
+    local.iznorowtraystagetable,
+    "${local.iznorowtraystagetable}stage"
   ])
 }
 
