@@ -69,6 +69,11 @@ output "storage_queues" {
   value       = { for k, v in azurerm_storage_queue.main : k => v.name }
 }
 
+output "storage_containers" {
+  description = "Map of storage container names"
+  value = { for k, v in azurerm_storage_container.main : k => v.name}
+}
+
 output "storage_tables" {
   description = "Map of storage table names"
   value       = { for k, v in azurerm_storage_table.main : k => v.name }
