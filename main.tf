@@ -44,13 +44,19 @@ locals {
   fetch_queue_name                  = "fetch-queue"
   update_queue_name                 = "update-queue"
   notification_queue_name           = "notification-queue"
+  scf_no_row_tray_batch_queue_name  = "scf-no-row-tray-batch-queue"
+  iz_no_row_tray_batch_queue_name   = "iz-no-row-tray-batch-queue"
   queues_to_create                  = toset([
     local.fetch_queue_name,
     "${local.fetch_queue_name}-stage",
     local.update_queue_name,
     "${local.update_queue_name}-stage",
     local.notification_queue_name,
-    "${local.notification_queue_name}-stage"
+    "${local.notification_queue_name}-stage",
+    local.scf_no_row_tray_batch_queue_name,
+    "${local.scf_no_row_tray_batch_queue_name}-stage",
+    local.iz_no_row_tray_batch_queue_name,
+    "${local.iz_no_row_tray_batch_queue_name}-stage"
   ])
   updated_items_container_name      = "updated-items-container"
   reports_container_name            = "reports-container"
